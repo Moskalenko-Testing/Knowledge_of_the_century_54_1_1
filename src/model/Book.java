@@ -3,7 +3,7 @@ package model;
 import java.util.Date;
 
 public class Book {
-    private int id;
+    public static int id;
     private String title;
     private String author;
     private Date releaseDate;
@@ -12,8 +12,8 @@ public class Book {
     // private Customer bookCustomer;(Возможно мы будем использовать сущность связь для сильной связи с книгой )
 
 
-    public Book(int id, String title, String author, Date releaseDate) {
-        this.id = id;
+    public Book(String title, String author, Date releaseDate) {
+        this.id++;
         this.title = title;
         this.author = author;
         this.releaseDate = releaseDate;
@@ -21,10 +21,6 @@ public class Book {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
