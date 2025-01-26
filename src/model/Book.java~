@@ -10,7 +10,7 @@ public class Book {
     private Date returnDate;
     private String nameOfCustomer;
     private boolean isBorrowed;
-    // private Customer bookCustomer;(Возможно мы будем использовать сущность связь для сильной связи с книгой )
+    private Customer bookCustomer;
 
 
     public Book(int id, String title, String author, Date releaseDate) {

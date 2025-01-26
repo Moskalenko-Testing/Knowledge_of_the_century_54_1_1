@@ -10,7 +10,7 @@ public class Book {
     private Date returnDate;
     private String nameOfCustomer;
     private boolean isBorrowed;
-    private Customer bookCustomer;
+    private User bookUser;
 
 
     public Book(int id, String title, String author, Date releaseDate) {
