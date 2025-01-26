@@ -57,14 +57,14 @@ public class BookRepositoryInterImpl implements BookRepositoryInter {
     }
 
     @Override
-    public boolean borrowBook(int id) {
+    public Book borrowBook(int id) {
         for (Book book : books) {
             if (book.getId() == id && !book.isBorrowed()) {
                 book.setBorrowed(true);
-                return true;
+                return book;
             }
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -98,5 +98,10 @@ public class BookRepositoryInterImpl implements BookRepositoryInter {
             }
         }
         return borrowedBooks;
+    }
+
+    @Override
+    public Book editBook(int id) {
+        return getById(id);
     }
 }

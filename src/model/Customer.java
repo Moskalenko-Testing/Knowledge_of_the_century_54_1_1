@@ -6,6 +6,7 @@ public class Customer {
     private String name;
     private String email;
     private String password;
+    private Role role;
     ArrayList<Book> customerBooks = new ArrayList<>();
 
     public Customer(String name, String email, String password) {
@@ -13,6 +14,7 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.customerBooks = new ArrayList<>();
+        this.role = Role.USER;
     }
 
     public String getName() {
@@ -45,6 +47,14 @@ public class Customer {
 
     public void addCustomerBook(Book book) {
         this.customerBooks.add(book);
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override

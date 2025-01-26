@@ -7,7 +7,7 @@ public interface CustomerRepository {
 
     boolean isEmailExist(String email);
 
-    Customer getUserByEmail(String email);
+    Customer getCustomerByEmail(String email);
 
     boolean updatePassword(String email, String newPassword);
 }

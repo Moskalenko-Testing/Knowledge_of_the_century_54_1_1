@@ -14,7 +14,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     @Override
-    public Customer getUserByEmail(String email) {
+    public Customer getCustomerByEmail(String email) {
         return null;
     }
 

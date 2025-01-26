@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-public class Book {
+public class Book implements Cloneable{
     private int id;
     private String title;
     private String author;
@@ -75,6 +75,11 @@ public class Book {
 
     public void setNameOfCustomer(String nameOfCustomer) {
         this.nameOfCustomer = nameOfCustomer;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     @Override
