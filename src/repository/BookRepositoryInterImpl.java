@@ -4,6 +4,7 @@ import model.Book;
 import utils.MyArrayList;
 import utils.MyList;
 
+import javax.swing.*;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,7 +28,7 @@ public class BookRepositoryInterImpl implements BookRepositoryInter {
     @Override
     public Book getById(int id) {
         for (Book book : books) {
-            if (book.getId() == id) {
+            if (book.getId() == id && !book.isBorrowed()) {
                 return book;
             }
         }
