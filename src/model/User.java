@@ -1,19 +1,20 @@
 package model;
 
-import java.util.ArrayList;
+import utils.MyArrayList;
+import utils.MyList;
 
-public class Customer {
+public class User {
     private String name;
     private String email;
     private String password;
     private Role role;
-    ArrayList<Book> customerBooks = new ArrayList<>();
+    MyList<Book> userBooks;
 
-    public Customer(String name, String email, String password) {
+    public User(String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.customerBooks = new ArrayList<>();
+        this.userBooks = new MyArrayList<>();
         this.role = Role.USER;
     }
 
@@ -41,12 +42,12 @@ public class Customer {
         this.password = password;
     }
 
-    public ArrayList<Book> getCustomerBooks() {
-        return customerBooks;
+    public MyList<Book> getCustomerBooks() {
+        return userBooks;
     }
 
     public void addCustomerBook(Book book) {
-        this.customerBooks.add(book);
+        this.userBooks.add(book);
     }
 
     public Role getRole() {
@@ -59,10 +60,12 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer: {" +
-                "password='" + password + '\'' +
+        return "User{" +
+                "name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", userBooks=" + userBooks +
                 '}';
     }
 }

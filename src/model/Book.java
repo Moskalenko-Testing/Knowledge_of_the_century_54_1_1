@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-public class Book implements Cloneable{
+public class Book implements Cloneable {
     private int id;
     private String title;
     private String author;
@@ -10,7 +10,7 @@ public class Book implements Cloneable{
     private Date returnDate;
     private String nameOfCustomer;
     private boolean isBorrowed;
-    private Customer bookCustomer;
+    private User bookUser;
 
 
     public Book(int id, String title, String author, Date releaseDate) {
@@ -76,10 +76,8 @@ public class Book implements Cloneable{
     public void setNameOfCustomer(String nameOfCustomer) {
         this.nameOfCustomer = nameOfCustomer;
     }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Book clone() throws CloneNotSupportedException {
+        return (Book) super.clone();
     }
 
     @Override

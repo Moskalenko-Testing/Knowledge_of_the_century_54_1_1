@@ -7,20 +7,20 @@ import utils.MyArrayList;
 import utils.MyList;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Objects;
 
 public class BookServiceImpl implements BookService {
     private final BookRepositoryInter bookRepository;
-    private final CustomerService customerService;
+    private final UserService userService;
 
-    public BookServiceImpl(BookRepositoryInter bookRepository, CustomerService customerService) {
+    public BookServiceImpl(BookRepositoryInter bookRepository, UserService customerService) {
         this.bookRepository = bookRepository;
-        this.customerService = customerService;
+        this.userService = customerService;
     }
 
     @Override
     public boolean addBook(String title, String author, Date releaseDate) {
-        if (customerService.getActiveCustomer().getRole() == Role.ADMIN) { // Книгу может добавлять только АДМ
+        if (userService.getActiveCustomer().getRole() == Role.ADMIN) { // Книгу может добавлять только АДМ
             bookRepository.addBook(title, author, releaseDate);
             return true;
         }
@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getById(int id) throws CloneNotSupportedException {
-        if (customerService.getActiveCustomer().getRole() == Role.ADMIN) { // Get только у админ
+        if (userService.getActiveCustomer().getRole() == Role.ADMIN) { // Get только у админ
             return bookRepository.getById(id);
         }
         return null;
@@ -54,9 +54,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean returnBook(int id) {
-        for (Book book : customerService.getActiveCustomer().getCustomerBooks()) {
+        for (Book book : userService.getActiveCustomer().getCustomerBooks()) {
             if (book.getId() == id) {
-                customerService.getActiveCustomer().getCustomerBooks().remove(book);
+                userService.getActiveCustomer().getCustomerBooks().remove(book);
                 return bookRepository.returnBook(id);
             }
         }
@@ -75,13 +75,19 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book borrowBook(int id) throws CloneNotSupportedException {
-            Role role = customerService.getActiveCustomer().getRole();
+            Role role = userService.getActiveCustomer().getRole();
             switch (role) {
-                case ADMIN -> customerService.getActiveCustomer().addCustomerBook(bookRepository.borrowBook(id));
+                case ADMIN -> {
+                    Book book = bookRepository.getById(id);
+                    userService.getActiveCustomer().addCustomerBook(book);
+                    bookRepository.borrowBook(id);
+                    return book;
+                }
+
                 case USER -> {
                     Book borrowBook = bookRepository.borrowBook(id);
-                    Book customerBook = (Book) borrowBook.clone();
-                    return customerBook;
+                    Book cloneBook = (Book) borrowBook.clone();
+                    return cloneBook;
                 }
             }
                     return null;
@@ -96,7 +102,7 @@ public class BookServiceImpl implements BookService {
 
     private MyList<Book> makeCloneList(MyList<Book> books) throws CloneNotSupportedException {
         if (books != null) {
-            Role role = customerService.getActiveCustomer().getRole();
+            Role role = userService.getActiveCustomer().getRole();
             switch (role) {
                 case ADMIN -> {return books;}
                 case USER -> {

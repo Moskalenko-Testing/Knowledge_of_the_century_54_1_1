@@ -4,12 +4,29 @@ import model.Book;
 import utils.MyArrayList;
 import utils.MyList;
 
+import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BookRepositoryInterImpl implements BookRepositoryInter {
     private MyList<Book> books = new MyArrayList<>();
     private final AtomicInteger idGenerator = new AtomicInteger(1);
+
+    public BookRepositoryInterImpl() {
+       MyList<Book> books = new MyArrayList<>();
+       addTestBooks();
+
+    }
+    private void addTestBooks() {
+        Book testBook1 = new Book(idGenerator.getAndIncrement(),"TestBook1", "TestAuthor1", new Date(2011, 3, 1));
+        Book testBook2 = new Book(idGenerator.getAndIncrement(),"TestBook2", "TestAuthor2", new Date(1975, 3, 10));
+        Book testBook3 = new Book(idGenerator.getAndIncrement(),"TestBook3", "TestAuthor3", new Date(2024, 3, 30));
+        books.add(testBook1);
+        books.add(testBook2);
+        books.add(testBook3);
+
+
+    };
 
     @Override
     public Book addBook(String title, String author, Date releaseDate) {
