@@ -4,8 +4,9 @@ import model.Book;
 import utils.MyArrayList;
 import utils.MyList;
 
-import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BookRepositoryInterImpl implements BookRepositoryInter {
@@ -58,14 +59,14 @@ public class BookRepositoryInterImpl implements BookRepositoryInter {
     }
 
     @Override
-    public boolean borrowBook(int id) {
+    public Book borrowBook(int id) {
         for (Book book : books) {
             if (book.getId() == id && !book.isBorrowed()) {
                 book.setBorrowed(true);
-                return true;
+                return book;
             }
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -73,10 +74,10 @@ public class BookRepositoryInterImpl implements BookRepositoryInter {
         for (Book book : books) {
             if (book.getId() == id) {
                 book.setBorrowed(false);
-                return true;
+                return true; // Повернення успішне
             }
         }
-        return false;
+        return false; // Книга з таким ID не знайдена
     }
 
     @Override

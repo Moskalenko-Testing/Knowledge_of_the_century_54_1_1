@@ -17,7 +17,7 @@ public interface BookRepositoryInter {
 
     MyList<Book> searchBookByAuthor(String author);
 
-    boolean borrowBook(int id);
+    Book borrowBook(int id);
     boolean returnBook(int id);
 
     MyList<Book> getAvailableBooks();
