@@ -1,10 +1,10 @@
 package repository;
 
-import model.Customer;
+import model.User;
 
 public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
-    public Customer addCustomer(String email, String password) {
+    public User addCustomer(String email, String password) {
         return null;
     }
 
@@ -14,7 +14,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     @Override
-    public Customer getCustomerByEmail(String email) {
+    public User getCustomerByEmail(String email) {
         return null;
     }
 

@@ -1,14 +1,18 @@
 package view;
 
+import model.Book;
+import model.Role;
+import model.User;
 import repository.BookRepositoryInter;
 import repository.BookRepositoryInterImpl;
 import repository.CustomerRepository;
 import repository.CustomerRepositoryImpl;
 import service.BookService;
 import service.BookServiceImpl;
-import service.CustomerService;
+import service.UserService;
 import service.CustomerServiceImpl;
 import utils.MyList;
+import utils.PersonValidition;
 
 import java.util.Scanner;
 
@@ -19,109 +23,172 @@ public class Menu {
 
     private final Scanner scanner = new Scanner(System.in);
 
-      BookRepositoryInter bookRepository = new BookRepositoryInterImpl();
-      CustomerRepository customerRepository = new CustomerRepositoryImpl();
-      CustomerService service = new CustomerServiceImpl(customerRepository);
-      BookService bookService = new BookServiceImpl(bookRepository, service);
+    BookRepositoryInter bookRepository = new BookRepositoryInterImpl();
+    CustomerRepository customerRepository = new CustomerRepositoryImpl();
+    UserService service = new CustomerServiceImpl(customerRepository);
+    BookService bookService = new BookServiceImpl(bookRepository, service);
 
 
+    public void start() {
+        showMenu();
+    }
 
+    private void showMenu() {
+        while (true) {
+            System.out.println("Добро пожаловать в меню");
+           // System.out.println("1. Меню книг");
+            System.out.println("2. Меню пользователя");
+            System.out.println("3. Меню администратора");
+            System.out.println("0. Выход из системы");
 
-        public void start() {
-            showMenu();
-        }
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        private void showMenu() {
-            while (true) {
-                System.out.println("Добро пожаловать в меню");
-                System.out.println("1. Меню книг");
-                System.out.println("2. Меню пользователя");
-                System.out.println("3. Меню администратора");
-                System.out.println("0. Выход из системы");
-
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-
-                if (choice == 0) {
-                    System.out.println("До свидания!");
-                    // Завершить работу приложения
-                    System.exit(0);
-                }
-
-                showSubMenu(choice);
-
+            if (choice == 0) {
+                System.out.println("До свидания!");
+                // Завершить работу приложения
+                System.exit(0);
             }
-        }
 
-        private void showSubMenu(int choice) {
-            switch (choice) {
+            showSubMenu(choice);
+
+        }
+    }
+
+    private void showSubMenu(int choice) {
+        switch (choice) {
+            case 1:
+               // showBookMenu();
+                break;
+            case 2:
+                // Todo show User Menu
+                showUserMenu();
+                break;
+            case 3:
+                // Todo show Admin Menu
+                showAdminMenu();
+                break;
+            default:
+                System.out.println("Сделайте корректный выбор");
+                waitRead();
+        }
+    }
+
+    private void showBookMenu() throws CloneNotSupportedException {
+        while (true) {
+            System.out.println("Меню книг");
+            System.out.println("1. Просмотр всех книг");
+            System.out.println("2. Поиск книг по названию");
+            System.out.println("3. Поиск книг по автору");
+            System.out.println("4. Просмотр доступных книг");
+            System.out.println("5. Просмотр книг у пользователя");
+            System.out.println("6. Заказать книгу"); // TODO реализовать вызов сервиса
+            System.out.println("7. Вернуть книгу");
+            System.out.println("0. Вернуться в предыдущее меню");
+
+            int showBookMenuChoice = scanner.nextInt();
+            scanner.nextLine();
+            switch (showBookMenuChoice) {
                 case 1:
-                    // Todo show car menu
-                    showBookMenu();
+                    getAllBooks();
                     break;
                 case 2:
-                    // Todo show User Menu
-                    showUserMenu();
+                    searchBookByTitle();
                     break;
                 case 3:
-                    // Todo show Admin Menu
-                    showAdminMenu();
+                    searchBookByAuthor();
+                    break;
+                case 4:
+                    getAvailableBooks();
+                    break;
+                case 5:
+                    listUserBooks();
+                    break;
+                case 6:
+                    borrowBook();
+                    break;
+                case 7:
+                    returnBook();
+                    break;
+                case 0:
+                    showBookMenu();
                     break;
                 default:
+                    service.logoutCustomer();
                     System.out.println("Сделайте корректный выбор");
-                    waitRead();
+                    waitRead(); //метод ожидания чтения клавиатуры
+                    break;
+
             }
-        }
 
-        private void showBookMenu(int choice) {
-           while (true) {
-               System.out.println("Меню книг");
-               System.out.println("1. Просмотр всех книг");
-               System.out.println("2. Поиск книг по названию");
-               System.out.println("3. Поиск книг по автору");
-               System.out.println("4. Просмотр доступных книг");
-               System.out.println("5. Просмотр книг у пользователя");
-               System.out.println("6. Заказать книгу"); // TODO реализовать вызов сервиса
-               System.out.println("7. Вернуть книгу");
-               System.out.println("0. Вернуться в предыдущее меню");
-
-               int input = scanner.nextInt();
-               scanner.nextLine();
-               switch (choice) {
-                   case 1:
-                       listBooks();
-                   break;
-                   case 2:
-                       searchBookByTitle();
-                   break;
-                   case 3:
-                       searchBookByAuthor();
-                   break;
-                   case 4:
-                       listAvailableBooks();
-                   break;
-                   case 5:
-                       listUserBooks();
-                   break;
-                   case 6:
-                       orderBook();
-                   break;
-                   case 7:
-                       returnBook();
-                   break;
-                   default:
-                       System.out.println("Сделайте корректный выбор");
-                       waitRead();
-               }
-
-               // прервать текущий цикл
-               //if (input == 0) break;
-
-           }
+            // прервать текущий цикл
+            //if (input == 0) break;
 
         }
 
-        private void showUserMenu() {
+    }
+
+
+    private void returnBook() {
+        System.out.println("Вepните книгу:");
+        Scanner scanner = new Scanner(System.in);
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        boolean result = bookService.returnBook(id);
+        if (result) {
+            System.out.println("Книга успешно возвращена");
+        } else {
+            System.out.println("Книга не была вoзвращена");
+        }
+
+    }
+
+    private void borrowBook() throws CloneNotSupportedException {
+        System.out.println("Выберите книгу:");
+        Scanner scanner = new Scanner(System.in);
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        Book borrowBook = bookService.borrowBook(id);
+        System.out.println("Вы взяли книгу: " + borrowBook.toString());
+
+
+    }
+
+    private void listUserBooks() throws CloneNotSupportedException {
+        MyList<Book> books = service.getActiveCustomer().getCustomerBooks();
+
+    }
+
+    private void getAvailableBooks() throws CloneNotSupportedException {
+        MyList<Book> books = bookService.getAvailableBooks();
+        System.out.println("Доступные книги:" + books.toString());
+    }
+
+    private void getAllBooks() throws CloneNotSupportedException {
+        MyList<Book> books = bookService.getAllBooks();
+        System.out.println("Все книги:" + books.toString());
+    }
+
+    private void searchBookByTitle() throws CloneNotSupportedException {
+        System.out.println("Введите название книги:");
+        String title = scanner.nextLine();
+        MyList<Book> books = bookService.searchBookByTitle(title);
+        System.out.println("Книги по названию:" + books.toString());
+    }
+    private void waitRead() {
+        System.out.println("\nДля продолжения нажмите Enter...");
+        scanner.nextLine();
+    }
+    private void searchBookByAuthor() throws CloneNotSupportedException {
+        System.out.println("Введите автора книги:");
+        Scanner scanner = new Scanner(System.in);
+        String author = scanner.nextLine();
+        MyList<Book> books = bookService.searchBookByAuthor(author);
+        System.out.println("Книги по автору:" + books.toString());
+
+    }
+
+        private void showUserMenu () {
             while (true) {
                 System.out.println("Меню пользователя");
                 System.out.println("1. Вход в систему");
@@ -140,55 +207,98 @@ public class Menu {
 
             }
         }
-
-        private void handleUserMenuUsers(int input) {
-            switch (input) {
-                case 1:
-                    // Авторизация
-                    // Todo
+    // Авторизация
+    // Todo
                 /*
                 1. Запросить у пользователя email и пароль
                 2. Передать полученные данные в СЕРВИСНЫЙ слой
                 3. Получить ответ от сервисного слоя - прошел ли успешно login -
                 4. Сообщить пользователю результат
                  */
-                    break;
-                case 2:
-                    // Регистрация
-                    // Todo
-                /*
-                1. Запросить необходимые данные (email, password)
-                2. Передать данные в СЕРВИСНЫЙ слой
-                3. Получить ответ - передать инфо клиенту
-                 */
-                    System.out.println("Регистрация нового пользователя");
-                    System.out.println("Введи email:");
-                    String email = scanner.nextLine();
 
+        private void handleUserMenuUsers ( int input){
+            switch (input) {
+                case 1:
+                    System.out.println("Вход в систему");
+                    System.out.println(" Введи email:");
+                    Scanner scanner = new Scanner(System.in);
+                    String email = scanner.nextLine();
                     System.out.println("Введите пароль: ");
                     String password = scanner.nextLine();
+                    boolean registrationResult = service.loginCustomer(email, password);
+                    if (registrationResult) {
+                        System.out.println("Вы успешно вошли в систему!");
+                        Role role = service.getActiveCustomer().getRole();
+                        switch (role) {
+                            case ADMIN:
+                                showAdminMenu();
+                                break;
+                            case USER:
+                                showUserMenu();
+                                break;
+                            case BLOCKED:
+                                System.out.println("Ваш аккаунт заблокирован!");
+                                break;
 
-                    User user = service.registerUser(email, password);
+                        }
 
-                    if (user == null) {
-                        System.out.println("Регистрация провалена!");
-                    } else {
-                        System.out.println("Вы успешно зарегистрировались в системе!");
                     }
 
+                    break;
+                case 2:
+                    System.out.println("Регистрация нового пользователя");
+                    System.out.println("Введи email:");
+                    Scanner scanner2 = new Scanner(System.in);
+                    String emailNew = scanner2.nextLine();
+                    System.out.println("Введите пароль: ");
+                    String passwordNew = scanner2.nextLine();
+                    User userNew = service.registerUser(emailNew, passwordNew);
+                    if (userNew != null) {
+                        System.out.println("Вы успешно зарегистрировались в системе!");
+                        showServiceUserMenu();
+                    }
                     waitRead();
                     break;
 
                 case 3:
-                    // Logout
-                    service.logout();
+                    service.logoutUser();
                     System.out.println("Вы вышли из системы");
                     waitRead();
                     break;
             }
         }
+        private void showServiceUserMenu () throws CloneNotSupportedException {
+            System.out.println("Меню пользователя");
+            System.out.println("1. Меню книги");
+            System.out.println("2. Сменить пароль");
+            System.out.println("3. Удалить аккаунт");
+            System.out.println("4. Logout");
+            System.out.println("0. Вернуться в предыдущее меню");
+            Scanner scanner = new Scanner(System.in);
+            int input = scanner.nextInt();
+            scanner.nextLine();
+            switch (input) {
+                case 1:
+                    showBookMenu();
+                    break;
+                case 2:
+                    System.out.println("Введите новый пароль: ");
+                    String newPassword = scanner.nextLine();
+                    service.updatePassword(service.getActiveCustomer().getEmail(), newPassword);
+                    break;
+                case 3:
+                    deleteAccount(); //Todo реализовать удаление аккаунта
+                    break;
+                case 4:
+                    service.logoutUser();
+                    System.out.println("Вы вышли из системы");
+                    waitRead();
+                    break;
+            }
 
-        private void showAdminMenu() {
+        }
+
+        private void showAdminMenu () {
             while (true) {
                 System.out.println("Меню администратора");
                 System.out.println("1. Регистрация нового пользователя");
@@ -236,14 +346,7 @@ public class Menu {
             }
         }
 
-
-
-        private void waitRead() {
-            System.out.println("\nДля продолжения нажмите Enter...");
-            scanner.nextLine();
-        }
-
-        private void  showCarsList(MyList<Car> list) {
+        private void showCarsList (MyList < Car > list) {
             for (Car car : list) {
                 System.out.printf("%d. %s (%d г.в). Цена: 2.%f\n",
                         car.getId(), car.getModel(), car.getYear(), car.getPrice());
@@ -251,5 +354,5 @@ public class Menu {
         }
 
 
-    }
+
 }

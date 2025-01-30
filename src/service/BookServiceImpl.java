@@ -7,13 +7,12 @@ import utils.MyArrayList;
 import utils.MyList;
 
 import java.util.Date;
-import java.util.List;
 
 public class BookServiceImpl implements BookService {
     private final BookRepositoryInter bookRepository;
-    private final CustomerService customerService;
+    private final UserService customerService;
 
-    public BookServiceImpl(BookRepositoryInter bookRepository, CustomerService customerService) {
+    public BookServiceImpl(BookRepositoryInter bookRepository, UserService customerService) {
         this.bookRepository = bookRepository;
         this.customerService = customerService;
     }

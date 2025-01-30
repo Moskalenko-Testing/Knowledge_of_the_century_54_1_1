@@ -2,14 +2,14 @@ package model;
 
 import java.util.ArrayList;
 
-public class Customer {
+public class User {
     private String name;
     private String email;
     private String password;
     private Role role;
     ArrayList<Book> customerBooks = new ArrayList<>();
 
-    public Customer(String name, String email, String password) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -59,7 +59,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer: {" +
+        return "User: {" +
                 "password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +

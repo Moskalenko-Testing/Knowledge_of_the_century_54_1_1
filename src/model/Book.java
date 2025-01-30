@@ -10,7 +10,7 @@ public class Book implements Cloneable{
     private Date returnDate;
     private String nameOfCustomer;
     private boolean isBorrowed;
-    private Customer bookCustomer;
+    private User bookCustomer;
 
 
     public Book(int id, String title, String author, Date releaseDate) {

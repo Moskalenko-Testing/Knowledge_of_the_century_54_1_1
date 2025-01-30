@@ -1,25 +1,20 @@
 package service;
 
-import model.Book;
-import model.Customer;
+import model.User;
 import model.Role;
 import repository.CustomerRepository;
-import utils.MyList;
 import utils.PersonValidition;
 
-import java.util.Date;
-import java.util.concurrent.Callable;
-
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl implements UserService {
     private final CustomerRepository customerRepository;
-    private Customer activeCustomer;
+    private User activeCustomer;
 
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
     @Override
-    public Customer registerCustomer(String email, String password) {
+    public User registerCustomer(String email, String password) {
         if(activeCustomer.getRole()!= Role.ADMIN) {
             System.out.println("This operation is only available to Admin");
             return null;
@@ -38,13 +33,13 @@ public class CustomerServiceImpl implements CustomerService {
             System.out.println("Email already exists!");
             return null;
         }
-        Customer customer = customerRepository.addCustomer(email, password);
+        User customer = customerRepository.addCustomer(email, password);
         return customer;
     }
 
     @Override
     public boolean loginCustomer(String email, String password) {
-        Customer tempCustomer = customerRepository.getCustomerByEmail(email);
+        User tempCustomer = customerRepository.getCustomerByEmail(email);
         if (tempCustomer != null) {
             if (tempCustomer.getPassword().equals(password)) {
                 this.activeCustomer = tempCustomer;
@@ -69,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerByEmail(String email) {
+    public User getCustomerByEmail(String email) {
         if(activeCustomer.getRole() == Role.ADMIN) {
             return customerRepository.getCustomerByEmail(email);
         }
@@ -77,14 +72,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getActiveCustomer() {
+    public User getActiveCustomer() {
         return activeCustomer;
     }
 
     @Override
     public boolean blockedCustomer(String email) {
         if(activeCustomer.getRole() == Role.ADMIN) {
-            Customer tempCustomer = customerRepository.getCustomerByEmail(email);
+            User tempCustomer = customerRepository.getCustomerByEmail(email);
             if(tempCustomer != null) {
                 tempCustomer.setRole(Role.BLOCKED);
                 return true;
