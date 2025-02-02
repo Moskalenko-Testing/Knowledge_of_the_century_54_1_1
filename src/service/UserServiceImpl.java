@@ -17,6 +17,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository, BookRepository bookRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+        this.activeUser = null;
     }
 
     @Override
@@ -40,7 +41,10 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         User user = userRepository.addUser(email, password);
-        return user;
+        if (this.setActiveUser(user)){
+            return user;
+        }
+        return null;
     }
 
     @Override
@@ -114,5 +118,14 @@ public class UserServiceImpl implements UserService {
             return userRepository.getAllUsers();
         }
         return null;
+    }
+
+    @Override
+    public boolean setActiveUser(User user) {
+        if(user instanceof User) {
+            this.activeUser = user;
+            return true;
+        }
+        return false;
     }
 }

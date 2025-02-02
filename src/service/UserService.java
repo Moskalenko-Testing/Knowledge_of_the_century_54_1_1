@@ -14,4 +14,5 @@ public interface UserService {
     boolean deleteUser(String email);
     MyList<Book> userBooks(String email);
     MyList<User> allAllUsers();
+    boolean setActiveUser(User user);
 }

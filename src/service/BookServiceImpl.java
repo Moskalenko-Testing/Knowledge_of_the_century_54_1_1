@@ -107,7 +107,7 @@ public class BookServiceImpl implements BookService {
             switch (role) {
                 case ADMIN -> {
                     Book book = bookRepository.getById(id);
-                    if(book instanceof Book && !book.isBorrowed()) {
+                    if(book instanceof Book && book.isBorrowed() == false) {
                         userService.getActiveUser().addUserBook(book);
                         bookRepository.getById(id).setBorrowed(true);
                         return book;
@@ -118,7 +118,7 @@ public class BookServiceImpl implements BookService {
 
                 case USER -> {
                     Book borrowBook = bookRepository.getById(id);
-                    if(borrowBook instanceof Book && !borrowBook.isBorrowed()) {
+                    if(borrowBook instanceof Book && borrowBook.isBorrowed() == false) {
                         Book cloneBook = (Book) borrowBook.clone();
                         bookRepository.getById(id).setBorrowed(true);
                         userService.getActiveUser().getUserBooks().add(cloneBook);
@@ -136,7 +136,7 @@ public class BookServiceImpl implements BookService {
         Role role = userService.getActiveUser().getRole();
         if (role == Role.ADMIN) {
             Book book = bookRepository.getById(id);
-            if(book instanceof Book && !book.isBorrowed()) {
+            if(book instanceof Book && book.isBorrowed() == false) {
                 bookRepository.deleteBook(id);
             }
             System.out.println("Книга с данным ID не доступна для удаления");
@@ -151,7 +151,7 @@ public class BookServiceImpl implements BookService {
         switch (role) {
             case ADMIN -> {
                 Book book = bookRepository.getById(Id);
-                if(book instanceof Book && book.isBorrowed()) {
+                if(book instanceof Book && book.isBorrowed() == true) {
                     userService.getActiveUser().getReservationBooks().add(book);
                 }
                 else {
@@ -161,9 +161,9 @@ public class BookServiceImpl implements BookService {
             }
             case USER -> {
                 Book book = bookRepository.getById(Id);
-                if(book instanceof Book && book.isBorrowed()) {
+                if(book instanceof Book && book.isBorrowed() == true) {
                     Book cloneBook = (Book) book.clone();
-                    userService.getActiveUser().getUserBooks().add(cloneBook);
+                    userService.getActiveUser().getReservationBooks().add(cloneBook);
                     return cloneBook;
                 }
                 else {

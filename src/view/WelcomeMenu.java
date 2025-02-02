@@ -13,7 +13,7 @@ import service.UserServiceImpl;
 
 import java.util.Scanner;
 
-public class WelcomeMenu extends MenuMain{
+public class WelcomeMenu extends MenuMain {
     private final UserService userService;
     private final BookService bookService;
     private final UserRepository userRepository;
@@ -31,10 +31,11 @@ public class WelcomeMenu extends MenuMain{
     }
 
     private void addAllTitles() {
-        menuTitle.put(1, "Sing In" );
+        menuTitle.put(1, "Sing In");
         menuTitle.put(2, "Registration");
         menuTitle.put(3, "Logout");
     }
+
     public void startMenu() throws CloneNotSupportedException {
         printMenu();
         int result = scanMenu(3);
@@ -46,6 +47,7 @@ public class WelcomeMenu extends MenuMain{
         }
 
     }
+
     private void loginUser() throws CloneNotSupportedException {
         System.out.println("Для входа в систему введите Ваш Email: ");
         Scanner scanner = new Scanner(System.in);
@@ -71,10 +73,11 @@ public class WelcomeMenu extends MenuMain{
                         menuBlocked.startMenu();
                     }
 
-                    }
                 }
             }
+        }
     }
+
     private void registrationUser() throws CloneNotSupportedException {
         System.out.println("Для регистрации в системе введите Ваш Email: ");
         Scanner scanner = new Scanner(System.in);
@@ -87,9 +90,11 @@ public class WelcomeMenu extends MenuMain{
             MenuUserImpl menuUser = new MenuUserImpl(userService, bookService, userRepository, bookRepository);
             menuUser.startMenu();
         }
+        scanner.close();
 
 
     }
+
     private void logoutUser() {
         System.out.println("Logout");
         System.exit(0);
