@@ -9,12 +9,14 @@ public class User {
     private String password;
     private Role role;
     MyList<Book> userBooks;
+    MyList<Book> reservationBooks;
 
     public User(String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.userBooks = new MyArrayList<>();
+        this.reservationBooks = new MyArrayList<>();
         this.role = Role.USER;
     }
 
@@ -42,11 +44,11 @@ public class User {
         this.password = password;
     }
 
-    public MyList<Book> getCustomerBooks() {
+    public MyList<Book> getUserBooks() {
         return userBooks;
     }
 
-    public void addCustomerBook(Book book) {
+    public void addUserBook(Book book) {
         this.userBooks.add(book);
     }
 
@@ -58,14 +60,17 @@ public class User {
         this.role = role;
     }
 
+    public MyList<Book> getReservationBooks() {
+        return reservationBooks;
+    }
+
+
     @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", role=" + role +
-                ", userBooks=" + userBooks +
                 '}';
     }
 }

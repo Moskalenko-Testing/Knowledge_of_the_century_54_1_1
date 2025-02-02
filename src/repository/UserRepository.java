@@ -1,6 +1,9 @@
 package repository;
 
 import model.User;
+import utils.MyList;
+
+import java.util.Map;
 
 public interface UserRepository {
     User addUser(String email, String password);
@@ -11,4 +14,5 @@ public interface UserRepository {
 
     boolean updatePassword(String email, String newPassword);
 
+    MyList<User> getAllUsers();
 }

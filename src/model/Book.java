@@ -86,9 +86,11 @@ public class Book implements Cloneable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
-                ", releaseDate=" + releaseDate +
+                ", releaseDate=" + (releaseDate.getYear() + 1900) +
                 ", returnDate=" + returnDate +
                 ", nameOfCustomer='" + nameOfCustomer + '\'' +
+                ", isBorrowed=" + isBorrowed +
                 '}';
     }
+
 }

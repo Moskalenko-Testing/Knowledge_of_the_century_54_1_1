@@ -10,22 +10,19 @@ public class UserRepositoryImpl implements UserRepository {
 
     public UserRepositoryImpl() {
         users = new MyArrayList<>();
-        addUsers();
+        addSuperAdmin();
     }
-    private void addUsers() {
-        User admin = new User("SuperAdmin", "SuperPassword" );
-        admin.setRole(Role.ADMIN);
-
-        User blocked = new User("3", "3");
-        blocked.setRole(Role.BLOCKED);
-
-        users.addAll(
-                admin,
-                blocked,
-                new User("2", "2")
-        );
+    private void addSuperAdmin() {
+        User superUser = new User("SuperEmail", "SuperPassword");
+        superUser.setRole(Role.ADMIN);
+        users.add(superUser);
+        User user = new User("U", "U");
+        user.setRole(Role.USER);
+        users.add(user);
+        User blockedUser = new User("B", "B");
+        blockedUser.setRole(Role.BLOCKED);
+        users.add(blockedUser);
     }
-
 
 
     @Override
@@ -69,5 +66,10 @@ public class UserRepositoryImpl implements UserRepository {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public MyList<User> getAllUsers() {
+        return this.users;
     }
 }

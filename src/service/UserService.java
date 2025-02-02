@@ -5,12 +5,13 @@ import model.User;
 import utils.MyList;
 
 public interface UserService {
-    User registerCustomer(String email, String password);
-    boolean loginCustomer(String email, String password);
-    boolean logoutCustomer();
+    User registerUser(String email, String password);
+    boolean loginUser(String email, String password);
     boolean updatePassword(String email, String newPassword);
-    User getCustomerByEmail(String email);
-    User getActiveCustomer();
-    boolean blockedCustomer(String email);
-    MyList<Book> customerBooks(String email);
+    User getUserByEmail(String email);
+    User getActiveUser();
+    boolean blockedUser(String email);
+    boolean deleteUser(String email);
+    MyList<Book> userBooks(String email);
+    MyList<User> allAllUsers();
 }
