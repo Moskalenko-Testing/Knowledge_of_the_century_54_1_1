@@ -66,6 +66,7 @@ public class BookRepositoryImpl implements BookRepository {
         for (Book book : books) {
             if (book.getId() == id) {
                 books.remove(book);
+                return book;
             }
         }
         return null;

@@ -49,15 +49,26 @@ public class MenuUserImpl extends MenuMain implements MenuUser {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите новый пароль: ");
         String newPassword = scanner.nextLine();
-        System.out.println("newPassword: " + newPassword);
-        System.out.println();
-        startMenu();
+        if(userService.updatePassword(userService.getActiveUser().getEmail(), newPassword)) {
+            System.out.println("newPassword: " + newPassword);
+            startMenu();
+        } else {
+            System.out.println("Пароль не изменен");
+            startMenu();
+        }
     }
 
     @Override
     public void deleteAccount() throws CloneNotSupportedException {
-        System.out.println("Delete Account");
-        startMenu();
+        if(userService.deleteUser(userService.getActiveUser().getEmail())) {
+            System.out.println("Delete Account");
+            WelcomeMenu welcomeMenu = new WelcomeMenu(userService, bookService, userRepository, bookRepository);
+            welcomeMenu.startMenu();
+        } else {
+            System.out.println("Удаление не возможно!");
+            startMenu();
+        }
+
     }
 
     @Override

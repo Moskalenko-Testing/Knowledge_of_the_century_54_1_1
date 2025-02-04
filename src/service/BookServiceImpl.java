@@ -137,8 +137,9 @@ public class BookServiceImpl implements BookService {
         if (role == Role.ADMIN) {
             Book book = bookRepository.getById(id);
             if(book instanceof Book && book.isBorrowed() == false) {
-                bookRepository.deleteBook(id);
+                return bookRepository.deleteBook(id);
             }
+        } else {
             System.out.println("Книга с данным ID не доступна для удаления");
             return null;
         }

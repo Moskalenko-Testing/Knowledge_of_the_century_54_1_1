@@ -72,13 +72,15 @@ public class WelcomeMenu extends MenuMain {
                         MenuBlockedImpl menuBlocked = new MenuBlockedImpl(userService, bookService, userRepository, bookRepository);
                         menuBlocked.startMenu();
                     }
-
                 }
             }
+        } else {
+            System.out.println("Email или Пароль не верны!");
+            this.startMenu();
         }
     }
 
-    private void registrationUser() throws CloneNotSupportedException {
+    protected void registrationUser() throws CloneNotSupportedException {
         System.out.println("Для регистрации в системе введите Ваш Email: ");
         Scanner scanner = new Scanner(System.in);
         String email = scanner.nextLine();

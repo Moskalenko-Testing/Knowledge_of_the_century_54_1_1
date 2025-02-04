@@ -4,6 +4,7 @@ import model.Role;
 import model.User;
 import utils.MyArrayList;
 import utils.MyList;
+import utils.PersonValidition;
 
 public class UserRepositoryImpl implements UserRepository {
     private final MyList<User> users;
@@ -61,7 +62,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean updatePassword(String email, String newPassword) {
         User user = getUserByEmail(email);
-        if (user != null) {
+        if (user != null && PersonValidition.isPasswordValid(newPassword)) {
             user.setPassword(newPassword);
             return true;
         }
