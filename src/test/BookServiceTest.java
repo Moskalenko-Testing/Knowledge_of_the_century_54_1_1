@@ -13,10 +13,12 @@ import service.BookService;
 import service.BookServiceImpl;
 import service.UserService;
 import service.UserServiceImpl;
+import utils.MyList;
 import view.WelcomeMenu;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,30 +60,107 @@ class BookServiceTest {
     }
 
     @Test
-    void getById() {
+    void getById() throws CloneNotSupportedException {
+        Book book1 = bookService.getById(1);
+        Book book2 = bookService.getById(1);
+        assertEquals(book1, book2 );
+        //Проверка на запрет данного метода для Роли USER
+        userService.getActiveUser().setRole(Role.USER);
+        Book book3 = bookService.getById(1);
+        assertNotEquals(book1, book3 );
     }
 
+
     @Test
-    void searchBookByTitle() {
+    void searchBookByTitle() throws CloneNotSupportedException, ParseException {
+        String title = "TestBook";
+        bookService.addBook(title, "TestAuthor", new Date());
+        bookService.addBook(title, "TestAuthor2", new Date());
+        Date releaseDate = new SimpleDateFormat("yyyy").parse("1234");
+        bookService.addBook(title, "TestAuthor", releaseDate);
+        MyList<Book> books = bookService.searchBookByTitle(title);
+        assertEquals(3, books.size());
+        assertEquals(13, bookService.getAllBooks().size());
+        //Test with ActiveUser.setRole == ROLE.User
+        bookService.addBook(title, "TestAuthor", new Date());
+        bookService.addBook(title, "TestAuthor2", new Date());
+        Date releaseDateUser = new SimpleDateFormat("yyyy").parse("2023");
+        bookService.addBook(title, "TestAuthor", releaseDateUser);
+        MyList<Book> booksUser = bookService.searchBookByTitle(title);
+        assertEquals(6, booksUser.size());
+        assertEquals(16, bookService.getAllBooks().size());
+
     }
 
     @Test
     void searchBookByAuthor() {
+        // Artur
     }
 
     @Test
-    void borrowBook() {
+    void borrowBook() throws CloneNotSupportedException {
+        bookService.addBook("TestBook", "TestAuthor", new Date());
+        assertEquals(0, bookService.getBorrowedBooks().size());
+        Book testBook = bookService.borrowBook(11);
+        assertEquals("TestBook", testBook.getTitle());
+        assertEquals("TestAuthor", testBook.getAuthor());
+        assertEquals(10, bookService.getAvailableBooks().size());
+        assertEquals(1, bookService.getBorrowedBooks().size());
+
+        Book borrowBookUnrealId = bookService.borrowBook(100);
+        assertEquals(null, borrowBookUnrealId);
+        assertEquals(1, bookService.getBorrowedBooks().size());
+        assertEquals(1, userService.getActiveUser().getUserBooks().size());
+        // Role User
+        userService.getActiveUser().setRole(Role.USER);
+        assertEquals(Book.class, bookService.borrowBook(2).getClass());
+        assertEquals(2, bookService.getBorrowedBooks().size());
+        assertEquals(2, userService.getActiveUser().getUserBooks().size());
+        assertEquals(9, bookService.getAvailableBooks().size());
+
+
     }
 
     @Test
-    void returnBook() {
-    }
+    void returnBook() throws CloneNotSupportedException {
+        assertEquals(10, bookService.getAvailableBooks().size());
+        bookService.addBook("TestBook", "TestAuthor", new Date());
+        assertEquals(11, bookService.getAvailableBooks().size());
+        bookService.borrowBook(11);
+        assertEquals(10, bookService.getAvailableBooks().size());
+        assertEquals("TestBook", bookService.getBorrowedBooks().get(0).getTitle());
+        assertEquals("TestAuthor", bookService.getBorrowedBooks().get(0).getAuthor());
+        assertEquals(1, userService.getActiveUser().getUserBooks().size());
+        Book testBook = bookService.returnBook(11);
+        assertEquals(11, bookService.getAvailableBooks().size());
+        assertEquals("TestBook", testBook.getTitle());
+        assertEquals("TestAuthor", testBook.getAuthor());
+        assertEquals(0, bookService.getBorrowedBooks().size());
+        assertEquals(0, userService.getActiveUser().getUserBooks().size());
+        Book borrowBookUnrealId = bookService.returnBook(100);
+        assertEquals(null,borrowBookUnrealId);
+        //Role User
 
-    @Test
-    void getAvailableBooks() {
-    }
+        userService.getActiveUser().setRole(Role.USER);
+        Book bookTestUser = bookService.borrowBook(1);
+        assertEquals(1, bookService.getBorrowedBooks().size());
+        Book bookTestReturnUser = bookService.returnBook(1);
+        assertEquals(Book.class, bookTestReturnUser.getClass());
+        Book testBookReturnUserUnrealId = bookService.returnBook(100);
+        assertEquals(null, testBookReturnUserUnrealId);
 
+    }
     @Test
-    void getBorrowedBooks() {
+    void getAllBooksWithChangeRoleAndCloneTest() throws CloneNotSupportedException {
+        MyList<Book> booksAdmin = bookService.getAllBooks();
+        MyList<Book> booksAdmin2 = bookService.getAllBooks();
+        userService.getActiveUser().setRole(Role.USER);
+        MyList<Book> booksUser = bookService.getAllBooks();
+//        System.out.println(booksAdmin.get(0));
+//        System.out.println(booksAdmin2.get(0));
+//        System.out.println(booksUser.get(0));
+        assertEquals(booksAdmin.get(0), booksAdmin2.get(0));
+        assertNotEquals(booksAdmin.get(0), booksUser.get(0));
+        assertEquals(booksAdmin.get(0).getId(), booksUser.get(0).getId());
     }
 }
