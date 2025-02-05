@@ -58,7 +58,7 @@ public class PersonValidition {
 
         boolean isDigit = false;
 
-        String symbols = "!%$@&*()[]";
+        String symbols = "!%$@&*+()[]";
 
         // альтернативный способ объявления переменных
         boolean[] result = new boolean[4]; // false, false
