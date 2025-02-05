@@ -1,10 +1,10 @@
-package view;
+package model;
 
 import java.util.HashMap;
 import java.util.Scanner;
 
 public abstract class MenuMain {
-    HashMap<Integer, String> menuTitle;
+    protected HashMap<Integer, String> menuTitle;
 
     public MenuMain() {
         this.menuTitle = new HashMap<>() {

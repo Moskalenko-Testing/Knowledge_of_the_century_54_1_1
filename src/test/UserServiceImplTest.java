@@ -38,6 +38,11 @@ class UserServiceImplTest {
 
     @Test
     void registerUser() {
+        User user = userService.registerUser("super@pupper.com", "Super12345+");
+        assertEquals(null, user);
+        String testEmail = "santa@barbara.com";
+        User user1 = userService.registerUser(testEmail, "Super12345+");
+        assertEquals(user1.getEmail(),testEmail);
     }
 
     @Test
@@ -54,6 +59,7 @@ class UserServiceImplTest {
 
     @Test
     void getActiveUser() {
+        assertEquals("super@pupper.com", userService.getActiveUser().getEmail());
     }
 
     @Test
@@ -74,5 +80,11 @@ class UserServiceImplTest {
 
     @Test
     void setActiveUser() {
+        User testUserNext = userService.registerUser("super@pupperpupper.com", "Super12345+");
+        testUserNext.setRole(Role.ADMIN);
+        userService.setActiveUser(testUserNext);
+        String testEmail = userService.getUserByEmail("super@pupper.com").getEmail();
+        assertNotEquals(userService.getActiveUser().getEmail(), testEmail);
+
     }
 }

@@ -1,6 +1,8 @@
 package model;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Book implements Cloneable {
     private int id;
@@ -76,6 +78,7 @@ public class Book implements Cloneable {
     public void setNameOfCustomer(String nameOfCustomer) {
         this.nameOfCustomer = nameOfCustomer;
     }
+
     public Book clone() throws CloneNotSupportedException {
         return (Book) super.clone();
     }

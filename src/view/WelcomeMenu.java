@@ -1,15 +1,13 @@
 package view;
 
+import model.Book;
+import model.MenuMain;
 import model.Role;
 import model.User;
 import repository.BookRepository;
-import repository.BookRepositoryImpl;
 import repository.UserRepository;
-import repository.UserRepositoryImpl;
 import service.BookService;
-import service.BookServiceImpl;
 import service.UserService;
-import service.UserServiceImpl;
 
 import java.util.Scanner;
 
