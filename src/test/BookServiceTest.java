@@ -93,8 +93,24 @@ class BookServiceTest {
     }
 
     @Test
-    void searchBookByAuthor() {
-        // Artur
+    void searchBookByAuthor() throws CloneNotSupportedException, ParseException {
+        String author = "TestAuthor";
+        bookService.addBook("TestBook",author, new Date());
+        bookService.addBook("TestBook2", author, new Date());
+        Date releaseDate = new SimpleDateFormat("yyyy").parse("1009");
+        bookService.addBook("TestBook", author, releaseDate);
+        MyList<Book> books = bookService.searchBookByAuthor(author);
+        assertEquals(3, books.size());
+        assertEquals(13, bookService.getAllBooks().size());
+        //Test with ActiveUser.setRole == ROLE.User
+        bookService.addBook("TestBook", author, new Date());
+        bookService.addBook("TestBook2", author, new Date());
+        Date releaseDateUser = new SimpleDateFormat("yyyy").parse("2025");
+        bookService.addBook("TestBook", author, releaseDateUser);
+        MyList<Book> booksUser = bookService.searchBookByAuthor(author);
+        assertEquals(6, booksUser.size());
+        assertEquals(16, bookService.getAllBooks().size());
+
     }
 
     @Test

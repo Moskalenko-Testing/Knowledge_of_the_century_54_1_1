@@ -123,7 +123,7 @@ class UserServiceImplTest {
          MyList<User> users = userService.allAllUsers();
          assertEquals(4, users.size());
          User user = userService.registerUser("super@papper.com", "Super12345+");
-         assertEquals(5, users.size());
+         assertEquals(5, userService.allAllUsers().size());
 
 
     }
