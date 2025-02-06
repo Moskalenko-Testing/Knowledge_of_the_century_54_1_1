@@ -1,0 +1,26 @@
+package repository;
+
+import model.Book;
+import utils.MyArrayList;
+
+import java.util.ArrayList;
+
+public interface BookReposititoryInter {
+
+    Book addBook(Book book);
+
+    MyArrayList<Book> getAllBooks();
+
+    MyArrayList<Book> searchBookByTitle(String title);
+
+    MyArrayList<Book> searchBookByAuthor(String author);
+
+    boolean borrowBook(int id);
+    boolean returnBook(int id);
+
+    MyArrayList<Book> getAvailableBooks();
+
+    MyArrayList<Book> getBorrowedBooks();
+
+}
+
