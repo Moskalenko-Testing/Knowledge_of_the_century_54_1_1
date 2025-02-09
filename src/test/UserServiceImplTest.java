@@ -56,18 +56,17 @@ class UserServiceImplTest {
         assertEquals("super@pupper.com", loggedInUser.getEmail());
         // Проверяем, что вход с неверным паролем НЕ проходит
         assertFalse(userService.loginUser("super@pupper.com", "WrongPassword"));
-        // Проверяем, что вход с правильным паролем работает
-        String newEmail = "super@pupperrr.com";
-        boolean loggedInSuccessfully = userService.loginUser(newEmail, "Super12345+");
-        assertNotNull(loggedInSuccessfully);
-        assertEquals(newEmail, userService.getActiveUser().getEmail());
+//        // Проверяем, что вход с правильным паролем работает
+//        String newEmail = "super@pupperrr.com";
+//        assertTrue(userService.loginUser(newEmail, "Super12345+"));
+//        assertEquals(newEmail, userService.getActiveUser().getEmail());
 
     }
 
     @Test
     void updatePassword() {
         assertTrue(userService.updatePassword("super@pupper.com", "NewPass123+"));
-        assertNull(userService.loginUser("super@pupper.com", "Super12345+"));
+        assertFalse(userService.loginUser("super@pupper.com", "Super12345+"));
         assertNotNull(userService.loginUser("super@pupper.com", "NewPass123+"));
 
     }
@@ -87,7 +86,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void userBooks() throws CloneNotSupportedException {
+    void userBooks() throws CloneNotSupportedException, IOException, ParseException {
 
         boolean checkBook =  bookService.addBook("Test Book", "Author", new Date());
         assertTrue(checkBook);

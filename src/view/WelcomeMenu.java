@@ -9,6 +9,8 @@ import repository.UserRepository;
 import service.BookService;
 import service.UserService;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class WelcomeMenu extends MenuMain {
@@ -34,7 +36,7 @@ public class WelcomeMenu extends MenuMain {
         menuTitle.put(3, "Logout");
     }
 
-    public void startMenu() throws CloneNotSupportedException {
+    public void startMenu() throws CloneNotSupportedException, IOException, ParseException {
         printMenu();
         int result = scanMenu(3);
         switch (result) {
@@ -46,7 +48,7 @@ public class WelcomeMenu extends MenuMain {
 
     }
 
-    private void loginUser() throws CloneNotSupportedException {
+    private void loginUser() throws CloneNotSupportedException, IOException, ParseException {
         System.out.println("Для входа в систему введите Ваш Email: ");
         Scanner scanner = new Scanner(System.in);
         String email = scanner.nextLine();
@@ -78,7 +80,7 @@ public class WelcomeMenu extends MenuMain {
         }
     }
 
-    protected void registrationUser() throws CloneNotSupportedException {
+    protected void registrationUser() throws CloneNotSupportedException, IOException, ParseException {
         System.out.println("Для регистрации в системе введите Ваш Email: ");
         Scanner scanner = new Scanner(System.in);
         String email = scanner.nextLine();

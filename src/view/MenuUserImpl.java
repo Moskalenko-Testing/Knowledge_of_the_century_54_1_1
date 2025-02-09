@@ -7,6 +7,8 @@ import repository.UserRepository;
 import service.BookService;
 import service.UserService;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class MenuUserImpl extends MenuMain implements MenuUser {
@@ -29,7 +31,7 @@ public class MenuUserImpl extends MenuMain implements MenuUser {
         menuTitle.put(4, "Logout");
         menuTitle.put(5, "Вернуться в предыдущее меню");
     }
-    public void startMenu() throws CloneNotSupportedException {
+    public void startMenu() throws CloneNotSupportedException, IOException, ParseException {
         printMenu();
         int result = scanMenu(5);
         switch (result) {
@@ -42,7 +44,7 @@ public class MenuUserImpl extends MenuMain implements MenuUser {
     }
 
     @Override
-    public void updatePassword() throws CloneNotSupportedException {
+    public void updatePassword() throws CloneNotSupportedException, IOException, ParseException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите новый пароль: ");
         String newPassword = scanner.nextLine();
@@ -56,7 +58,7 @@ public class MenuUserImpl extends MenuMain implements MenuUser {
     }
 
     @Override
-    public void deleteAccount() throws CloneNotSupportedException {
+    public void deleteAccount() throws CloneNotSupportedException, IOException, ParseException {
         if(userService.deleteUser(userService.getActiveUser().getEmail())) {
             System.out.println("Delete Account");
             WelcomeMenu welcomeMenu = new WelcomeMenu(userService, bookService, userRepository, bookRepository);
@@ -69,19 +71,22 @@ public class MenuUserImpl extends MenuMain implements MenuUser {
     }
 
     @Override
-    public void showMenuUserBooks() throws CloneNotSupportedException {
+    public void showMenuUserBooks() throws CloneNotSupportedException, IOException, ParseException {
         MenuUserBooksImpl menuUserBooks = new MenuUserBooksImpl(userService, bookService, userRepository, bookRepository);
         menuUserBooks.startMenu();
     }
 
     @Override
-    public void logoutUser() {
-        System.out.println("Logout");
-        System.exit(0);
+    public void logoutUser() throws IOException {
+        if(userService.logout()) {
+            System.out.println("Logout! Массив Users обновлен!");
+            System.exit(0);
+        }
+        System.out.println("Массив Users не был корректно обновлен!" );
     }
 
     @Override
-    public void returnLastMenu() throws CloneNotSupportedException {
+    public void returnLastMenu() throws CloneNotSupportedException, IOException, ParseException {
         System.out.println("Return Last Menu");
         WelcomeMenu welcomeMenu = new WelcomeMenu(userService, bookService, userRepository, bookRepository);
         welcomeMenu.startMenu();

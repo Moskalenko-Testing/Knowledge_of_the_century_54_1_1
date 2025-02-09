@@ -10,9 +10,8 @@ public class Book implements Cloneable {
     private String author;
     private Date releaseDate;
     private Date returnDate;
-    private String nameOfCustomer;
     private boolean isBorrowed;
-    private User bookUser;
+    private String userBookEmail;
 
 
     public Book(int id, String title, String author, Date releaseDate) {
@@ -20,7 +19,9 @@ public class Book implements Cloneable {
         this.title = title;
         this.author = author;
         this.releaseDate = releaseDate;
+        this.returnDate = returnDate;
         this.isBorrowed = isBorrowed;
+        this.userBookEmail = userBookEmail;
     }
 
     public boolean isBorrowed() {
@@ -71,12 +72,12 @@ public class Book implements Cloneable {
         this.returnDate = returnDate;
     }
 
-    public String getNameOfCustomer() {
-        return nameOfCustomer;
+    public String getUserBookEmail() {
+        return userBookEmail;
     }
 
-    public void setNameOfCustomer(String nameOfCustomer) {
-        this.nameOfCustomer = nameOfCustomer;
+    public void setUserBookEmail(String userBookEmail) {
+        this.userBookEmail = userBookEmail;
     }
 
     public Book clone() throws CloneNotSupportedException {
@@ -92,8 +93,8 @@ public class Book implements Cloneable {
                 ", author='" + author + '\'' +
                 ", releaseDate=" + (releaseDate.getYear() + 1900) +
                 ", returnDate=" + returnDate +
-                ", nameOfCustomer='" + nameOfCustomer + '\'' +
                 ", isBorrowed=" + isBorrowed +
+                ", userBookEmail='" + userBookEmail + '\'' +
                 '}';
     }
 

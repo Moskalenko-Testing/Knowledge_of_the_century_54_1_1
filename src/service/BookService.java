@@ -3,10 +3,12 @@ package service;
 import model.Book;
 import utils.MyList;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 
 public interface BookService {
-    boolean addBook(String title, String author, Date releaseDate);
+    boolean addBook(String title, String author, Date releaseDate) throws IOException, ParseException;
     MyList<Book> getAllBooks() throws CloneNotSupportedException;
     Book getById(int id) throws CloneNotSupportedException;
     MyList<Book> searchBookByTitle(String title) throws CloneNotSupportedException;
@@ -17,4 +19,5 @@ public interface BookService {
     MyList<Book> getBorrowedBooks() throws CloneNotSupportedException;
     Book deleteBook(int id) throws CloneNotSupportedException;
     Book reserveBookByID(int Id) throws CloneNotSupportedException;
+    boolean logout() throws CloneNotSupportedException, IOException;
 }

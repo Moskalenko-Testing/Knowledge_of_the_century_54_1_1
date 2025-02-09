@@ -9,6 +9,9 @@ import repository.UserRepository;
 import utils.MyList;
 import utils.PersonValidition;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class UserServiceImpl implements UserService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
@@ -83,6 +86,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public MyList<Book> userBooks(String email) {
         return activeUser.getUserBooks();
+    }
+
+    @Override
+    public boolean logout() throws IOException {
+        FileWriter fileWriter = new FileWriter("users.csv", true);
+        for (User user : userRepository.getAllUsers()) {
+            String [] newUserArray = new String[] {user.getEmail(),
+                    user.getPassword(),
+                    user.getRole().toString()
+            };
+            if (!user.getEmail().equals("SuperEmail")) {
+                String newLine = String.join(";", newUserArray);
+                newLine = newLine + "\n";
+                fileWriter.write(newLine);
+            }
+        }
+        fileWriter.close();
+        return true;
     }
 
     @Override

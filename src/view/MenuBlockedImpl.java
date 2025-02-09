@@ -8,6 +8,9 @@ import service.BookService;
 import service.UserService;
 import utils.MyList;
 
+import java.io.IOException;
+import java.text.ParseException;
+
 public class MenuBlockedImpl extends MenuMain implements MenuBlocked {
     UserService userService;
     BookService bookService;
@@ -30,7 +33,7 @@ public class MenuBlockedImpl extends MenuMain implements MenuBlocked {
         menuTitle.put(3, "Logout");
         menuTitle.put(4, "Вернуться в предыдущее меню");
     }
-    public void startMenu() throws CloneNotSupportedException {
+    public void startMenu() throws CloneNotSupportedException, IOException, ParseException {
         printMenu();
         int result = scanMenu(4);
         switch (result) {
@@ -44,7 +47,7 @@ public class MenuBlockedImpl extends MenuMain implements MenuBlocked {
 
 
     @Override
-    public void getAllMyBook() throws CloneNotSupportedException {
+    public void getAllMyBook() throws CloneNotSupportedException, IOException, ParseException {
         MyList<Book> books = userService.getActiveUser().getUserBooks();
         if (books != null && !books.isEmpty()){
            for (Book book : books) {
@@ -59,7 +62,7 @@ public class MenuBlockedImpl extends MenuMain implements MenuBlocked {
     }
 
     @Override
-    public void returnAllBook() throws CloneNotSupportedException {
+    public void returnAllBook() throws CloneNotSupportedException, IOException, ParseException {
         MyList<Book> books = userService.getActiveUser().getUserBooks();
         if (books != null && books.size()> 0) {
             for (Book book : books) {
@@ -85,7 +88,7 @@ public class MenuBlockedImpl extends MenuMain implements MenuBlocked {
     }
 
     @Override
-    public void returnLastMenu() throws CloneNotSupportedException {
+    public void returnLastMenu() throws CloneNotSupportedException, IOException, ParseException {
         WelcomeMenu welcomeMenu = new WelcomeMenu(userService, bookService, userRepository, bookRepository);
         welcomeMenu.startMenu();
     }

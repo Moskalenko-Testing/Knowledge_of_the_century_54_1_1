@@ -4,7 +4,6 @@ import utils.MyArrayList;
 import utils.MyList;
 
 public class User {
-    private String name;
     private String email;
     private String password;
     private Role role;
@@ -12,7 +11,6 @@ public class User {
     MyList<Book> reservationBooks;
 
     public User(String email, String password) {
-        this.name = name;
         this.email = email;
         this.password = password;
         this.userBooks = new MyArrayList<>();
@@ -20,13 +18,6 @@ public class User {
         this.role = Role.USER;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getEmail() {
         return email;
@@ -68,7 +59,6 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +

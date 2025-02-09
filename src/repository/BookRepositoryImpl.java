@@ -4,14 +4,12 @@ import model.Book;
 import utils.MyArrayList;
 import utils.MyList;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class BookRepositoryImpl implements BookRepository {
     private MyList<Book> books = new MyArrayList<>();
@@ -27,14 +25,22 @@ public class BookRepositoryImpl implements BookRepository {
         BufferedReader reader = new BufferedReader(new FileReader("books.csv"));
         while ((row = reader.readLine()) != null) {
                 String[] fields = row.split(";");
-                String title = fields[0];
-                String author = fields[1];
-                Date releaseDate = new SimpleDateFormat("yyyy").parse(fields[2]);
-                saveBook(title, author, releaseDate);
+                String title = fields[1];
+                String author = fields[2];
+                Date releaseDate = new SimpleDateFormat("yyyy").parse(fields[3]);
+                Book newBook = saveBook(title, author, releaseDate);
+                if(!fields[4].equals("null")) {
+                    Date dateReturn = new SimpleDateFormat("yyyy").parse(fields[4]);
+                    newBook.setReturnDate(dateReturn);
+                }
+                newBook.setBorrowed(Boolean.parseBoolean(fields[5]));
+                newBook.setUserBookEmail(fields[6]);
         }
+        reader.close();
     }
+
     @Override
-    public Book saveBook (String title, String author, Date releaseDate) {
+    public Book saveBook (String title, String author, Date releaseDate) throws IOException, ParseException {
         for (Book book : books) {
             if (book.getTitle().equals(title) && book.getAuthor().equals(author) && book.getReleaseDate().equals(releaseDate)) {
                 return book;

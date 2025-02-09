@@ -6,6 +6,9 @@ import repository.BookRepository;
 import utils.MyArrayList;
 import utils.MyList;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 
 public class BookServiceImpl implements BookService {
@@ -18,7 +21,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean addBook(String title, String author, Date releaseDate) {
+    public boolean addBook(String title, String author, Date releaseDate) throws IOException, ParseException {
         if (userService.getActiveUser().getRole() == Role.ADMIN) { // Книгу может добавлять только АДМ
             bookRepository.saveBook(title, author, releaseDate);
             return true;
@@ -71,6 +74,7 @@ public class BookServiceImpl implements BookService {
         if(book instanceof Book){
             bookRepository.getById(id).setBorrowed(false);
             userService.getActiveUser().getUserBooks().remove(book);
+            book.setUserBookEmail(null);
             return book;
         }
             return null;
@@ -110,6 +114,7 @@ public class BookServiceImpl implements BookService {
                     if(book instanceof Book && book.isBorrowed() == false) {
                         userService.getActiveUser().addUserBook(book);
                         bookRepository.getById(id).setBorrowed(true);
+                        book.setUserBookEmail(userService.getActiveUser().getEmail());
                         return book;
                     }
                     System.out.println("Книга с данным ID не доступна");
@@ -122,6 +127,7 @@ public class BookServiceImpl implements BookService {
                         Book cloneBook = (Book) borrowBook.clone();
                         bookRepository.getById(id).setBorrowed(true);
                         userService.getActiveUser().getUserBooks().add(cloneBook);
+                        borrowBook.setUserBookEmail(userService.getActiveUser().getEmail());
                         return cloneBook;
                     }
                     System.out.println("Книга с данным ID не доступна");
@@ -174,6 +180,27 @@ public class BookServiceImpl implements BookService {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean logout() throws CloneNotSupportedException, IOException {
+        FileWriter fileWriter = new FileWriter("books.csv", false);
+        //id=10, title='Пособие при изучении истории русской словесности. От Карамзина до Пушкина', author='Смирновский П. В.', releaseDate=1894, returnDate=null, isBorrowed=false, userBookEmail='null'}
+        for(Book book : this.getAllBooks()){
+            String [] newLineArray = new String [] {Integer.toString(book.getId()),
+                    book.getTitle(),
+                    book.getAuthor(),
+                    Integer.toString(book.getReleaseDate().getYear() + 1900),
+                    book.getReturnDate()!= null?Integer.toString(book.getReturnDate().getYear() + 1900):null,
+                    Boolean.toString(book.isBorrowed()),
+                    book.getUserBookEmail()
+            };
+            String newLine = String.join(";", newLineArray);
+            newLine = newLine + "\n";
+            fileWriter.write(newLine);
+        }
+        fileWriter.close();
+        return true;
     }
     /*
     Метод сепарирования массива книг в зависимости от Роли User

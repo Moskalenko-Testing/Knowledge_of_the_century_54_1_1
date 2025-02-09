@@ -41,7 +41,7 @@ class BookServiceTest {
     }
 
     @Test
-    void addBook() throws CloneNotSupportedException {
+    void addBook() throws CloneNotSupportedException, IOException, ParseException {
         //For Role = Admin
         assertEquals(10, bookService.getAllBooks().size());
         bookService.addBook("TestBook", "TestAuthor", new Date());
@@ -72,7 +72,7 @@ class BookServiceTest {
 
 
     @Test
-    void searchBookByTitle() throws CloneNotSupportedException, ParseException {
+    void searchBookByTitle() throws CloneNotSupportedException, ParseException, IOException {
         String title = "TestBook";
         bookService.addBook(title, "TestAuthor", new Date());
         bookService.addBook(title, "TestAuthor2", new Date());
@@ -93,7 +93,7 @@ class BookServiceTest {
     }
 
     @Test
-    void searchBookByAuthor() throws CloneNotSupportedException, ParseException {
+    void searchBookByAuthor() throws CloneNotSupportedException, ParseException, IOException {
         String author = "TestAuthor";
         bookService.addBook("TestBook",author, new Date());
         bookService.addBook("TestBook2", author, new Date());
@@ -114,7 +114,7 @@ class BookServiceTest {
     }
 
     @Test
-    void borrowBook() throws CloneNotSupportedException {
+    void borrowBook() throws CloneNotSupportedException, IOException, ParseException {
         bookService.addBook("TestBook", "TestAuthor", new Date());
         assertEquals(0, bookService.getBorrowedBooks().size());
         Book testBook = bookService.borrowBook(11);
@@ -138,7 +138,7 @@ class BookServiceTest {
     }
 
     @Test
-    void returnBook() throws CloneNotSupportedException {
+    void returnBook() throws CloneNotSupportedException, IOException, ParseException {
         assertEquals(10, bookService.getAvailableBooks().size());
         bookService.addBook("TestBook", "TestAuthor", new Date());
         assertEquals(11, bookService.getAvailableBooks().size());
