@@ -12,7 +12,7 @@ public interface MenuAdmin {
     void getActiveUser() throws CloneNotSupportedException, IOException, ParseException;
     void getAllUsers() throws CloneNotSupportedException, IOException, ParseException;
     void getAllUserBooksByEmail() throws CloneNotSupportedException, IOException, ParseException;
-    void logout() throws IOException;
+    void logout() throws IOException, CloneNotSupportedException;
     void returnLastMenu() throws CloneNotSupportedException, IOException, ParseException;
     void getMenuBooks() throws CloneNotSupportedException, IOException, ParseException;
 

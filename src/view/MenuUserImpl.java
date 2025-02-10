@@ -2,10 +2,13 @@ package view;
 
 import model.Book;
 import model.MenuMain;
+import model.User;
 import repository.BookRepository;
 import repository.UserRepository;
 import service.BookService;
 import service.UserService;
+import utils.MyArrayList;
+import utils.MyList;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -16,14 +19,32 @@ public class MenuUserImpl extends MenuMain implements MenuUser {
     BookService bookService;
     UserRepository userRepository;
     BookRepository bookRepository;
-    public MenuUserImpl(UserService userService, BookService bookService, UserRepository userRepository, BookRepository bookRepository) {
+    public MenuUserImpl(UserService userService, BookService bookService, UserRepository userRepository, BookRepository bookRepository) throws CloneNotSupportedException {
         super();
         this.userService = userService;
         this.bookService = bookService;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         addAllTitles();
+        halloUsers();
     }
+    private void halloUsers() throws CloneNotSupportedException {
+        MyList<Book> reserveUserBooks = new MyArrayList<>();
+        User user = userService.getActiveUser();
+        for (Book book: user.getReservationBooks()) {
+            Book needBook = bookService.getById(book.getId());
+            if (needBook instanceof Book && needBook.isBorrowed() == false) {
+                reserveUserBooks.add(needBook);
+            }
+        }
+        if(reserveUserBooks.size() > 0) {
+            System.out.println("Сейчас доступны заказанные Вами книги: ");
+            for (Book book: reserveUserBooks) {
+                System.out.println(book);
+            }
+        }
+    }
+
     private void addAllTitles() {
         menuTitle.put(1, "Сменить пароль" );
         menuTitle.put(2, "Удалить аккаунт");
@@ -77,8 +98,8 @@ public class MenuUserImpl extends MenuMain implements MenuUser {
     }
 
     @Override
-    public void logoutUser() throws IOException {
-        if(userService.logout()) {
+    public void logoutUser() throws IOException, CloneNotSupportedException {
+        if(userService.logout() && bookService.logout()) {
             System.out.println("Logout! Массив Users обновлен!");
             System.exit(0);
         }

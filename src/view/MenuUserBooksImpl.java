@@ -211,7 +211,7 @@ public class MenuUserBooksImpl extends MenuMain implements MenuUserBooks {
 
     @Override
     public void logout() throws IOException, CloneNotSupportedException {
-        if(bookService.logout()) {
+        if(bookService.logout() && userService.logout()) {
             System.out.println("Logout! Массив Книг обновлен!");
             System.exit(0);
         }

@@ -35,9 +35,11 @@ public class BookRepositoryImpl implements BookRepository {
                 }
                 newBook.setBorrowed(Boolean.parseBoolean(fields[5]));
                 newBook.setUserBookEmail(fields[6]);
+                newBook.setUserReserveBookEmail(fields[7]);
         }
         reader.close();
     }
+
 
     @Override
     public Book saveBook (String title, String author, Date releaseDate) throws IOException, ParseException {

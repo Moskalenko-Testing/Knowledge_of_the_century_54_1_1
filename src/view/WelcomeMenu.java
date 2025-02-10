@@ -8,6 +8,7 @@ import repository.BookRepository;
 import repository.UserRepository;
 import service.BookService;
 import service.UserService;
+import utils.MyList;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -26,6 +27,7 @@ public class WelcomeMenu extends MenuMain {
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         addAllTitles();
+        userBorrowReserveInit();
 
 
     }
@@ -100,5 +102,18 @@ public class WelcomeMenu extends MenuMain {
     private void logoutUser() {
         System.out.println("Logout");
         System.exit(0);
+    }
+    private void userBorrowReserveInit () {
+        MyList<Book> tempBooks = bookRepository.getAllBooks();
+        for (Book book : tempBooks) {
+            if (book instanceof Book && book.isBorrowed() == true) {
+                User user = userService.getUserByEmail(book.getUserBookEmail());
+                user.addUserBook(book);
+            }
+            if (book instanceof Book && !book.getUserReserveBookEmail().equals("null")) {
+                User reserveUser = userService.getUserByEmail(book.getUserReserveBookEmail());
+                reserveUser.addReservationBook(book);
+            }
+        }
     }
 }

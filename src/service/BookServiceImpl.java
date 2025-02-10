@@ -2,6 +2,7 @@ package service;
 
 import model.Book;
 import model.Role;
+import model.User;
 import repository.BookRepository;
 import utils.MyArrayList;
 import utils.MyList;
@@ -20,6 +21,7 @@ public class BookServiceImpl implements BookService {
         this.userService = userService;
     }
 
+
     @Override
     public boolean addBook(String title, String author, Date releaseDate) throws IOException, ParseException {
         if (userService.getActiveUser().getRole() == Role.ADMIN) { // Книгу может добавлять только АДМ
@@ -36,10 +38,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getById(int id) throws CloneNotSupportedException {
-        if (userService.getActiveUser().getRole() == Role.ADMIN) { // Get только у админ
-            return bookRepository.getById(id);
-        }
-        return null;
+        return bookRepository.getById(id);
     }
 
 
@@ -158,6 +157,7 @@ public class BookServiceImpl implements BookService {
         switch (role) {
             case ADMIN -> {
                 Book book = bookRepository.getById(Id);
+                book.setUserReserveBookEmail(this.userService.getActiveUser().getEmail());
                 if(book instanceof Book && book.isBorrowed() == true) {
                     userService.getActiveUser().getReservationBooks().add(book);
                 }
@@ -168,6 +168,7 @@ public class BookServiceImpl implements BookService {
             }
             case USER -> {
                 Book book = bookRepository.getById(Id);
+                book.setUserReserveBookEmail(this.userService.getActiveUser().getEmail());
                 if(book instanceof Book && book.isBorrowed() == true) {
                     Book cloneBook = (Book) book.clone();
                     userService.getActiveUser().getReservationBooks().add(cloneBook);
@@ -193,7 +194,8 @@ public class BookServiceImpl implements BookService {
                     Integer.toString(book.getReleaseDate().getYear() + 1900),
                     book.getReturnDate()!= null?Integer.toString(book.getReturnDate().getYear() + 1900):null,
                     Boolean.toString(book.isBorrowed()),
-                    book.getUserBookEmail()
+                    book.getUserBookEmail(),
+                    book.getUserReserveBookEmail()
             };
             String newLine = String.join(";", newLineArray);
             newLine = newLine + "\n";

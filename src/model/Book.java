@@ -12,6 +12,7 @@ public class Book implements Cloneable {
     private Date returnDate;
     private boolean isBorrowed;
     private String userBookEmail;
+    private String userReserveBookEmail;
 
 
     public Book(int id, String title, String author, Date releaseDate) {
@@ -22,6 +23,7 @@ public class Book implements Cloneable {
         this.returnDate = returnDate;
         this.isBorrowed = isBorrowed;
         this.userBookEmail = userBookEmail;
+        this.userReserveBookEmail = userReserveBookEmail;
     }
 
     public boolean isBorrowed() {
@@ -80,6 +82,14 @@ public class Book implements Cloneable {
         this.userBookEmail = userBookEmail;
     }
 
+    public String getUserReserveBookEmail() {
+        return userReserveBookEmail;
+    }
+
+    public void setUserReserveBookEmail(String userReserveBookEmail) {
+        this.userReserveBookEmail = userReserveBookEmail;
+    }
+
     public Book clone() throws CloneNotSupportedException {
         return (Book) super.clone();
     }
@@ -95,6 +105,7 @@ public class Book implements Cloneable {
                 ", returnDate=" + returnDate +
                 ", isBorrowed=" + isBorrowed +
                 ", userBookEmail='" + userBookEmail + '\'' +
+                ", userReserveBookEmail='" + userReserveBookEmail + '\'' +
                 '}';
     }
 

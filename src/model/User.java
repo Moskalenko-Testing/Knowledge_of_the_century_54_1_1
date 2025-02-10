@@ -54,6 +54,9 @@ public class User {
     public MyList<Book> getReservationBooks() {
         return reservationBooks;
     }
+    public void addReservationBook(Book book) {
+        this.reservationBooks.add(book);
+    }
 
 
     @Override

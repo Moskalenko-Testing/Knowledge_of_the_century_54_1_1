@@ -72,10 +72,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        if(activeUser.getRole() == Role.ADMIN) {
-            return userRepository.getUserByEmail(email);
-        }
-        return null;
+        return userRepository.getUserByEmail(email);
     }
 
     @Override
@@ -90,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean logout() throws IOException {
-        FileWriter fileWriter = new FileWriter("users.csv", true);
+        FileWriter fileWriter = new FileWriter("users.csv", false);
         for (User user : userRepository.getAllUsers()) {
             String [] newUserArray = new String[] {user.getEmail(),
                     user.getPassword(),
@@ -114,6 +111,13 @@ public class UserServiceImpl implements UserService {
             for(Book tempBook : tempUserBooks) {
                 Book returnBook = bookRepository.getById(tempBook.getId());
                 returnBook.setBorrowed(false);
+                returnBook.setUserBookEmail(null);
+            }
+            MyList<Book> tempUserBooksReserve = bookRepository.getAllBooks();
+            for(Book tempBook : tempUserBooksReserve) {
+                if(tempBook instanceof Book && tempBook.getUserReserveBookEmail().equals(email)) {
+                    tempBook.setUserReserveBookEmail(null);
+                }
             }
             userRepository.getAllUsers().remove(tempUser);
             return true;

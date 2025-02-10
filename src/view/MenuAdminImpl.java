@@ -7,6 +7,7 @@ import repository.BookRepository;
 import repository.UserRepository;
 import service.BookService;
 import service.UserService;
+import utils.MyArrayList;
 import utils.MyList;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class MenuAdminImpl extends MenuMain implements MenuAdmin {
     BookService bookService;
     UserRepository userRepository;
     BookRepository bookRepository;
-    public MenuAdminImpl(UserService userService, BookService bookService, UserRepository userRepository, BookRepository bookRepository) {
+    public MenuAdminImpl(UserService userService, BookService bookService, UserRepository userRepository, BookRepository bookRepository) throws CloneNotSupportedException {
         super();
         this.userService = userService;
         this.bookService = bookService;
@@ -28,6 +29,7 @@ public class MenuAdminImpl extends MenuMain implements MenuAdmin {
         this.bookRepository = bookRepository;
 
         addAllTitles();
+        halloUsers();
     }
     private void addAllTitles() {
         menuTitle.put(1, "Сменить роль User by Email" );
@@ -62,6 +64,22 @@ public class MenuAdminImpl extends MenuMain implements MenuAdmin {
         Scanner scanner = new Scanner(System.in);
         String email = scanner.nextLine();
         return userService.getUserByEmail(email);
+    }
+    private void halloUsers() throws CloneNotSupportedException {
+        MyList<Book> reserveUserBooks = new MyArrayList<>();
+        User user = userService.getActiveUser();
+        for (Book book: user.getReservationBooks()) {
+            Book needBook = bookService.getById(book.getId());
+            if (needBook instanceof Book && needBook.isBorrowed() == false) {
+                reserveUserBooks.add(needBook);
+            }
+        }
+        if(reserveUserBooks.size() > 0) {
+            System.out.println("Сейчас доступны заказанные Вами книги: ");
+            for (Book book: reserveUserBooks) {
+                System.out.println(book);
+            }
+        }
     }
 
     @Override
@@ -144,8 +162,8 @@ public class MenuAdminImpl extends MenuMain implements MenuAdmin {
     }
 
     @Override
-    public void logout() throws IOException {
-        if(userService.logout()) {
+    public void logout() throws IOException, CloneNotSupportedException {
+        if(userService.logout() && bookService.logout()) {
             System.out.println("Logout! Массив Users обновлен!");
             System.exit(0);
         }
