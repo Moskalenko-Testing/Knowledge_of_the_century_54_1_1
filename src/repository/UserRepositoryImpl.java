@@ -86,6 +86,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public MyList<User> getAllUsers() {
+
         return this.users;
     }
 }

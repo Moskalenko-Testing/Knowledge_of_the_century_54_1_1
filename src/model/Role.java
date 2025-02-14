@@ -8,6 +8,7 @@ public enum Role {
     Role() {
     }
     Role getRole(String role) {
+
         return Role.valueOf(role);
     }
 }
