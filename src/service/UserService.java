@@ -4,6 +4,8 @@ import model.Book;
 import model.User;
 import utils.MyList;
 
+import java.io.IOException;
+
 public interface UserService {
     User registerUser(String email, String password);
     boolean loginUser(String email, String password);
@@ -15,4 +17,5 @@ public interface UserService {
     MyList<Book> userBooks(String email);
     MyList<User> allAllUsers();
     boolean setActiveUser(User user);
+    boolean logout() throws IOException;
 }

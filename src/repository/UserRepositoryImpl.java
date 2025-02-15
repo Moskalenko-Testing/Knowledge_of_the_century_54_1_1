@@ -6,24 +6,39 @@ import utils.MyArrayList;
 import utils.MyList;
 import utils.PersonValidition;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
+
 public class UserRepositoryImpl implements UserRepository {
     private final MyList<User> users;
 
-    public UserRepositoryImpl() {
+    public UserRepositoryImpl() throws IOException, ParseException {
         users = new MyArrayList<>();
         addSuperAdmin();
+        addTestUser();
     }
     private void addSuperAdmin() {
         User superUser = new User("SuperEmail", "SuperPassword");
         superUser.setRole(Role.ADMIN);
         users.add(superUser);
-        User user = new User("U", "U");
-        user.setRole(Role.USER);
-        users.add(user);
-        User blockedUser = new User("B", "B");
-        blockedUser.setRole(Role.BLOCKED);
-        users.add(blockedUser);
     }
+    private void addTestUser() throws IOException, ParseException {
+        String row;
+        BufferedReader reader = new BufferedReader(new FileReader("users.csv"));
+        while ((row = reader.readLine()) != null) {
+            String[] fields = row.split(";");
+            String email = fields[0];
+            String password = fields[1];
+            User user = new User(email, password);
+            Role role = Role.valueOf(fields[2]);
+            user.setRole(role);
+            users.add(user);
+        }
+        reader.close();
+    }
+
 
 
     @Override
@@ -71,6 +86,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public MyList<User> getAllUsers() {
+
         return this.users;
     }
 }

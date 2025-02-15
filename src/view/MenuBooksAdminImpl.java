@@ -8,6 +8,8 @@ import service.BookService;
 import service.UserService;
 import utils.MyList;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -42,7 +44,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
         menuTitle.put(12, "Logout");
         menuTitle.put(13, "Вернуться в предыдущее меню");
     }
-    public void startMenu() throws CloneNotSupportedException {
+    public void startMenu() throws CloneNotSupportedException, IOException, ParseException {
         printMenu();
         int result = scanMenu(13);
         switch (result) {
@@ -65,7 +67,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
 
 
     @Override
-    public void showAllBooks() throws CloneNotSupportedException {
+    public void showAllBooks() throws CloneNotSupportedException, IOException, ParseException {
         MyList<Book> books = bookRepository.getAllBooks();
         if (books != null && books.size() > 0) {
             for (Book book : books) {
@@ -80,7 +82,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void getBookByTitle() throws CloneNotSupportedException {
+    public void getBookByTitle() throws CloneNotSupportedException, IOException, ParseException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите Название книги");
         String title = scanner.nextLine();
@@ -98,7 +100,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void getBookByAuthor() throws CloneNotSupportedException {
+    public void getBookByAuthor() throws CloneNotSupportedException, IOException, ParseException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите Автора книги");
         String author = scanner.nextLine();
@@ -115,7 +117,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void getAvailableBooks() throws CloneNotSupportedException {
+    public void getAvailableBooks() throws CloneNotSupportedException, IOException, ParseException {
         MyList<Book> books = bookService.getAvailableBooks();
         if (books != null && books.size() > 0) {
             for (Book book : books) {
@@ -129,7 +131,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void getBorrowedBooks() throws CloneNotSupportedException {
+    public void getBorrowedBooks() throws CloneNotSupportedException, IOException, ParseException {
         MyList<Book> books = bookService.getBorrowedBooks();
         if (books != null && books.size() > 0) {
             for (Book book : books) {
@@ -144,7 +146,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void borrowBookByID() throws CloneNotSupportedException {
+    public void borrowBookByID() throws CloneNotSupportedException, IOException, ParseException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите ID книги");
         int idBook = scanner.nextInt();
@@ -160,7 +162,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void returnBookByID() throws CloneNotSupportedException {
+    public void returnBookByID() throws CloneNotSupportedException, IOException, ParseException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите ID книги");
         int idBook = scanner.nextInt();
@@ -176,7 +178,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void deleteBookByID() throws CloneNotSupportedException {
+    public void deleteBookByID() throws CloneNotSupportedException, IOException, ParseException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите ID книги");
         int idBook = scanner.nextInt();
@@ -192,7 +194,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void editBookByID() throws CloneNotSupportedException {
+    public void editBookByID() throws CloneNotSupportedException, IOException, ParseException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите ID книги");
         int idBook = scanner.nextInt();
@@ -219,7 +221,7 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void addBook() throws CloneNotSupportedException {
+    public void addBook() throws CloneNotSupportedException, IOException, ParseException {
         String [] bookDate = saveBook();
         Date date = new Date();
         date.setYear(Integer.parseInt(bookDate[2]) -1900);
@@ -238,14 +240,18 @@ public class MenuBooksAdminImpl extends MenuMain implements MenuBooksAdmin {
     }
 
     @Override
-    public void logout() {
-        System.out.println("Logout");
-        System.exit(0);
+    public void logout() throws IOException, CloneNotSupportedException {
+        if(bookService.logout() && userService.logout()) {
+            System.out.println("Logout! Массив Книг обновлен!");
+            System.exit(0);
+        }
+        System.out.println("Массив Книг не был корректно обновлен!" );
+
 
     }
 
     @Override
-    public void returnLastMenu() throws CloneNotSupportedException {
+    public void returnLastMenu() throws CloneNotSupportedException, IOException, ParseException {
         MenuAdminImpl menuAdmin = new MenuAdminImpl(userService, bookService, userRepository, bookRepository);
         menuAdmin.startMenu();
 

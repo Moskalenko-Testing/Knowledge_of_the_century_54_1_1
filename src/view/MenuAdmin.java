@@ -1,16 +1,19 @@
 package view;
 
+import java.io.IOException;
+import java.text.ParseException;
+
 public interface MenuAdmin {
 
-    void setNewUserRoleByEmail () throws CloneNotSupportedException; // BLOCKED and ADMIN
-    void deleteUserByEmail() throws CloneNotSupportedException; // Удалением Пользователя
+    void setNewUserRoleByEmail () throws CloneNotSupportedException, IOException, ParseException; // BLOCKED and ADMIN
+    void deleteUserByEmail() throws CloneNotSupportedException, IOException, ParseException; // Удалением Пользователя
     void editUserByEmail();
-    void findUserByEmail() throws CloneNotSupportedException;
-    void getActiveUser() throws CloneNotSupportedException;
-    void getAllUsers() throws CloneNotSupportedException;
-    void getAllUserBooksByEmail() throws CloneNotSupportedException;
-    void logout();
-    void returnLastMenu() throws CloneNotSupportedException;
-    void getMenuBooks() throws CloneNotSupportedException;
+    void findUserByEmail() throws CloneNotSupportedException, IOException, ParseException;
+    void getActiveUser() throws CloneNotSupportedException, IOException, ParseException;
+    void getAllUsers() throws CloneNotSupportedException, IOException, ParseException;
+    void getAllUserBooksByEmail() throws CloneNotSupportedException, IOException, ParseException;
+    void logout() throws IOException, CloneNotSupportedException;
+    void returnLastMenu() throws CloneNotSupportedException, IOException, ParseException;
+    void getMenuBooks() throws CloneNotSupportedException, IOException, ParseException;
 
 }

@@ -19,7 +19,6 @@ public class MenuApp {
         UserService userService = new UserServiceImpl(userRepository, bookRepository);
         BookService bookService = new BookServiceImpl(bookRepository, userService);
 
-
        WelcomeMenu welcomeMenu = new WelcomeMenu(userService, bookService, userRepository, bookRepository);
        welcomeMenu.startMenu();
     }

@@ -3,5 +3,14 @@ package model;
 public enum Role {
     USER,
     ADMIN,
-    BLOCKED
+    BLOCKED;
+
+    Role() {
+    }
+    Role getRole(String role) {
+
+        return Role.valueOf(role);
+    }
 }
+
+

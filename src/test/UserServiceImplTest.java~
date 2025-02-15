@@ -34,7 +34,7 @@ class UserServiceImplTest {
         userRepository = new UserRepositoryImpl();
         userService = new UserServiceImpl(userRepository, bookRepository);
         bookService = new BookServiceImpl(bookRepository, userService);
-        User testUser = userService.registerUser("super@pupperrr.com", "Super12345+");
+        User testUser = userService.registerUser("super@pupper.com", "Super12345+");
         testUser.setRole(Role.ADMIN);
         userService.setActiveUser(testUser);
 
@@ -56,17 +56,18 @@ class UserServiceImplTest {
         assertEquals("super@pupper.com", loggedInUser.getEmail());
         // Проверяем, что вход с неверным паролем НЕ проходит
         assertFalse(userService.loginUser("super@pupper.com", "WrongPassword"));
-//        // Проверяем, что вход с правильным паролем работает
-//        String newEmail = "super@pupperrr.com";
-//        assertTrue(userService.loginUser(newEmail, "Super12345+"));
-//        assertEquals(newEmail, userService.getActiveUser().getEmail());
+        // Проверяем, что вход с правильным паролем работает
+        String newEmail = "super@pupperrr.com";
+        boolean loggedInSuccessfully = userService.loginUser(newEmail, "Super12345+");
+        assertNotNull(loggedInSuccessfully);
+        assertEquals(newEmail, userService.getActiveUser().getEmail());
 
     }
 
     @Test
     void updatePassword() {
         assertTrue(userService.updatePassword("super@pupper.com", "NewPass123+"));
-        assertFalse(userService.loginUser("super@pupper.com", "Super12345+"));
+        assertNull(userService.loginUser("super@pupper.com", "Super12345+"));
         assertNotNull(userService.loginUser("super@pupper.com", "NewPass123+"));
 
     }
@@ -82,19 +83,17 @@ class UserServiceImplTest {
 
     @Test
     void getActiveUser() {
-        assertEquals("super@pupperrr.com", userService.getActiveUser().getEmail());
+        assertEquals("super@pupper.com", userService.getActiveUser().getEmail());
     }
 
     @Test
-    void userBooks() throws CloneNotSupportedException, IOException, ParseException {
-
+    void userBooks() throws CloneNotSupportedException {
 
         boolean checkBook =  bookService.addBook("Test Book", "Author", new Date());
         assertTrue(checkBook);
         assertEquals(0,userService.getActiveUser().getUserBooks().size());
         MyList<Book> books = bookService.searchBookByTitle("Test Book");
-        int testBookForReturnTest1 = bookService.getAllBooks().size();
-        Book testBook = books.get(0);// TODO если есть время проверить
+        Book testBook = books.get(0);
         bookService.borrowBook(testBook.getId());
         assertEquals(1,userService.getActiveUser().getUserBooks().size());
         bookService.returnBook(testBook.getId());
@@ -122,9 +121,9 @@ class UserServiceImplTest {
     @Test
     void allAllUsers() {
          MyList<User> users = userService.allAllUsers();
-         int userSize = users.size();
+         assertEquals(4, users.size());
          User user = userService.registerUser("super@papper.com", "Super12345+");
-         assertEquals(userSize + 1, users.size());
+         assertEquals(5, userService.allAllUsers().size());
 
 
     }
