@@ -119,15 +119,15 @@ class UserServiceImplTest {
 
     }
 
-//    @Test
-//    void allAllUsers() {
-//         MyList<User> users = userService.allAllUsers();
-//         assertEquals(4, users.size());
-//         User user = userService.registerUser("super@papper.com", "Super12345+");
-//         assertEquals(5, users.size());
-//
-//
-//    }
+    @Test
+    void allAllUsers() {
+         MyList<User> users = userService.allAllUsers();
+         int userSize = users.size();
+         User user = userService.registerUser("super@papper.com", "Super12345+");
+         assertEquals(userSize + 1, users.size());
+
+
+    }
 
     @Test
     void setActiveUser() {

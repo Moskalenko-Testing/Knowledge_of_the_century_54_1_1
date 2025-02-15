@@ -161,9 +161,6 @@ class BookServiceTest {
         MyList<Book> booksAdmin2 = bookService.getAllBooks();
         userService.getActiveUser().setRole(Role.USER);
         MyList<Book> booksUser = bookService.getAllBooks();
-//        System.out.println(booksAdmin.get(0));
-//        System.out.println(booksAdmin2.get(0));
-//        System.out.println(booksUser.get(0));
         assertEquals(booksAdmin.get(0), booksAdmin2.get(0));
         assertNotEquals(booksAdmin.get(0), booksUser.get(0));
         assertEquals(booksAdmin.get(0).getId(), booksUser.get(0).getId());
